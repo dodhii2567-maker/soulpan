@@ -1,22 +1,19 @@
 {
-    "name": "SoulPan",
+    "name": "SoulPan - 핸드팬 명상",
     "short_name": "SoulPan",
-    "description": "Smart Handpan Meditation & Practice",
     "start_url": "./index.html",
     "display": "standalone",
-    "background_color": "#0f0c29",
-    "theme_color": "#0f0c29",
+    "background_color": "#1a1a2e",
+    "theme_color": "#1a1a2e",
+    "orientation": "portrait",
+    "scope": "/soulpan/",
+    "lang": "ko",
+    "dir": "ltr",
     "icons": [
         {
-            "src": "icon_192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "icon_512.png",
+            "src": "icon.png",
             "sizes": "512x512",
             "type": "image/png"
         }
-    ],
-    "orientation": "portrait"
+    ]
 }
