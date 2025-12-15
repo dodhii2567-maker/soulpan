@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulPan - 스마트 명상</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('SW Registered!', reg.scope))
+                    .catch(err => console.log('SW Failed:', err));
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app-container">
+        <header>
+            <h1>SoulPan</h1>
+            <p id="status-text">화면을 클릭하여 시작하세요</p>
+        </header>
+
+        <main>
+            <div id="handpan-visual">
+                <div class="ding-note" data-note="D3">Ding</div>
+            </div>
+        </main>
+
+        <nav id="controls">
+            <div class="row">
+                <button id="btn-mood" class="control-btn">성향 분석</button>
+                <button id="btn-breathe" class="control-btn">호흡 명상</button>
+            </div>
+            <div class="row">
+                <button id="btn-song" class="control-btn star-btn">FULL SONG (음악 연주)</button>
+            </div>
+            <div class="row">
+                <button id="btn-chord" class="control-btn">화음 추천</button>
+                <button id="btn-pattern" class="control-btn">패턴 연습</button>
+            </div>
+            <!-- 연습 모드 컨트롤 (처음엔 숨김) -->
+            <div id="practice-controls" class="row hidden" style="margin-top: 10px;">
+                <button id="btn-next-step" class="control-btn star-btn">다음 노트 Play ▶</button>
+            </div>
+        </nav>
+
+        <div id="mood-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>오늘의 기분은?</h2>
+                <div class="mood-options">
+                    <button data-mood="calm">평온함 (Calm)</button>
+                    <button data-mood="sad">위로 (Comfort)</button>
+                    <button data-mood="mystic">신비 (Mystic)</button>
+                    <button data-mood="joy">기쁨 (Joy)</button>
+                </div>
+                <button id="close-mood" class="close-btn">닫기</button>
+            </div>
+        </div>
+
+        <!-- 화음 선택 모달 -->
+        <div id="chord-modal" class="modal hidden">
+            <div class="modal-content list-modal">
+                <h2>화음 선택</h2>
+                <div id="chord-list" class="scroll-list">
+                    <!-- JS로 생성됨 -->
+                </div>
+                <button id="close-chord" class="close-btn">닫기</button>
+            </div>
+        </div>
+
+        <!-- 패턴 선택 모달 -->
+        <div id="pattern-modal" class="modal hidden">
+            <div class="modal-content list-modal">
+                <h2>패턴 연주 & 레슨</h2>
+                <div id="pattern-list" class="scroll-list">
+                    <!-- JS로 생성됨 -->
+                </div>
+                <button id="close-pattern" class="close-btn">닫기</button>
+            </div>
+        </div>
+
+        <!-- 음악(Song) 선택 모달 -->
+        <div id="song-modal" class="modal hidden">
+            <div class="modal-content list-modal">
+                <h2>음악 연주 (Full Song)</h2>
+                <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 15px;">패턴을 모아 하나의 완성된 곡을 연주합니다.</p>
+                <div id="song-list" class="scroll-list">
+                    <!-- JS로 생성됨 -->
+                </div>
+                <button id="close-song" class="close-btn">닫기</button>
+            </div>
+        </div>
+
+        <!-- 곡 구조/악보 디스플레이 -->
+        <div id="score-container" class="hidden">
+            <h3 id="now-playing-title">Now Playing: <span id="current-pattern-name"></span></h3>
+
+            <!-- 곡 구조 (Dashboard List) -->
+            <div id="song-structure-list" class="hidden">
+                <!-- 여기에 곡의 전체 구조가 리스트 형태로 들어감 -->
+            </div>
+
+            <!-- 곡 구조 (Roadmap) - Deprecated logic but keeping container hidden just in case of JS err -->
+            <div id="song-roadmap" class="hidden"></div>
+
+            <div id="score-display">
+                <!-- 악보 노트들이 여기에 표시됨 -->
+            </div>
+        </div>
+
+        <div id="breathing-overlay" class="hidden overlay-screen">
+            <div class="circle-guide"></div>
+            <p id="breath-text">Inhale</p>
+            <button id="close-breath" class="close-btn-overlay">그만하기</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

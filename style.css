@@ -1,0 +1,580 @@
+:root {
+    /* 몽환적인 우주 색감 */
+    --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    --pan-color: #1b1b2f;
+    --note-color: rgba(255, 255, 255, 0.1);
+    --highlight: #00d2ff;
+    /* Cyan Neon */
+    --highlight-secondary: #9d00ff;
+    /* Purple Neon */
+    --guide-color: #4facfe;
+    --text-color: #ffffff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-gradient);
+    background-size: 200% 200%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-color);
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#app-container {
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 10;
+    /* 별빛 배경 효과를 위한 컨테이너 */
+}
+
+/* 별이 반짝이는 배경 효과 (가상 요소 사용) */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 3px),
+        radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 3px);
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    opacity: 0.8;
+    z-index: -1;
+    animation: twinkle 100s linear infinite;
+}
+
+@keyframes twinkle {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-1000px);
+    }
+}
+
+header h1 {
+    font-family: 'Cinzel', serif;
+    /* Modern, Mystical Font */
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: 5px;
+    margin-bottom: 5px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px rgba(79, 172, 254, 0.4);
+    background: linear-gradient(to right, #ffffff, #a1c4fd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#status-text {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 30px;
+    min-height: 20px;
+    color: #a4b0be;
+    font-weight: 300;
+}
+
+/* 핸드팬 UI */
+#handpan-visual {
+    width: 320px;
+    height: 320px;
+    /* 우주선/행성 같은 느낌의 그라데이션 */
+    background: radial-gradient(circle at 30% 30%, #2c2c54, #1b1b2f);
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.8),
+        inset 0 0 60px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(79, 172, 254, 0.2);
+    /* 은은한 외광 */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ding-note {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background-color: rgba(255, 255, 255, 0.05);
+    /* 유리 질감 */
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    z-index: 10;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.1s;
+    font-family: 'Cinzel', serif;
+}
+
+.note {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.1s;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 터치했을 때 효과 (화려한 Neon Glow) */
+.note.active,
+.ding-note.active {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #000;
+    transform: scale(0.95) translate(-50%, -50%);
+    /* Ding note transform fix need logic check if class is shared properly, but simplistic approach here */
+    box-shadow:
+        0 0 20px var(--highlight),
+        0 0 40px var(--highlight),
+        0 0 80px var(--highlight-secondary);
+    border-color: transparent;
+}
+
+/* Ding Note specific transform adjustment if needed for multi-class issues, but above standardizes it */
+.ding-note.active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.note.active {
+    transform: scale(0.95);
+    /* Regular notes don't use translate center */
+}
+
+
+/* 추천 가이드 효과 (파란빛 펄스) */
+.note.guide,
+.ding-note.guide {
+    border: 2px solid var(--guide-color);
+    box-shadow: 0 0 15px var(--guide-color);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 15px var(--guide-color);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px var(--guide-color);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 15px var(--guide-color);
+    }
+}
+
+/* 딩노트 펄스 위치 보정 */
+.ding-note.guide {
+    animation: pulseCentered 1.5s infinite;
+}
+
+@keyframes pulseCentered {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 15px var(--guide-color);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        box-shadow: 0 0 30px var(--guide-color);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 15px var(--guide-color);
+    }
+}
+
+
+/* 컨트롤 버튼들 (Glassmorphism & Unified) */
+#controls {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    gap: 12px;
+}
+
+.control-btn {
+    background: rgba(255, 255, 255, 0.08);
+    /* 조금 더 밝게 */
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* 그림자 강화 */
+    color: rgba(255, 255, 255, 0.95);
+    padding: 14px 28px;
+    border-radius: 12px;
+    /* 둥근 사각형으로 변경 (Modern) */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    min-width: 100px;
+    /* 최소 너비 통일 */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+}
+
+/* Star Button (Full Song 등 강조 버튼) */
+.star-btn {
+    border: 1px solid var(--highlight-secondary);
+    background: rgba(157, 0, 255, 0.15);
+    color: #e0aaff;
+    box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+}
+
+.star-btn:hover {
+    background: rgba(157, 0, 255, 0.35);
+    box-shadow: 0 0 30px var(--highlight-secondary);
+}
+
+/* Song Dashboard Structure */
+#song-structure-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    /* 촘촘하게 */
+    margin-bottom: 15px;
+    max-height: 150px;
+    /* 너무 길면 스크롤 */
+    overflow-y: auto;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.structure-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #888;
+    transition: 0.2s;
+}
+
+.structure-row span:first-child {
+    font-weight: 500;
+    color: #aaa;
+}
+
+.structure-row.active {
+    background: rgba(79, 172, 254, 0.2);
+    /* Highlight Color Background */
+    border: 1px solid var(--highlight);
+    color: #fff;
+    transform: scale(1.02);
+}
+
+.structure-row.active span:first-child {
+    color: var(--highlight);
+}
+
+/* 모달 (팝업) 스타일 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1b1b2f, #16213e);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 80%;
+    max-width: 320px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    max-height: 80vh;
+    /* 리스트가 길어질 경우 대비 */
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #fff;
+    font-weight: 300;
+}
+
+.mood-options,
+.scroll-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+    overflow-y: auto;
+    /* 스크롤 가능하게 */
+    padding-right: 5px;
+}
+
+/* 스크롤바 디자인 */
+.scroll-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scroll-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.mood-options button,
+.list-item-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.mood-options button:hover,
+.list-item-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.02);
+}
+
+.close-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #bbb;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: auto;
+    transition: 0.2s;
+}
+
+/* 악보 디스플레이 */
+#score-container {
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 360px;
+}
+
+#score-container h3 {
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
+    color: var(--highlight);
+    font-weight: normal;
+}
+
+#song-roadmap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.roadmap-item {
+    font-size: 0.75rem;
+    color: #888;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.roadmap-item.active {
+    color: #fff;
+    background: var(--highlight-secondary);
+    font-weight: bold;
+    box-shadow: 0 0 5px var(--highlight-secondary);
+}
+
+.roadmap-arrow {
+    font-size: 0.7rem;
+    color: #555;
+}
+
+#score-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.score-note {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #ccc;
+    transition: all 0.2s;
+}
+
+.score-note.active {
+    background: var(--highlight);
+    color: #000;
+    box-shadow: 0 0 10px var(--highlight);
+    transform: scale(1.1);
+    font-weight: bold;
+}
+
+.close-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* 유틸리티 */
+.hidden {
+    display: none !important;
+}
+
+/* 호흡 가이드 오버레이 */
+.overlay-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 12, 41, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.circle-guide {
+    width: 100px;
+    height: 100px;
+    background-color: var(--highlight);
+    border-radius: 50%;
+    margin-bottom: 30px;
+    box-shadow: 0 0 50px var(--highlight);
+    filter: blur(5px);
+}
+
+#breath-text {
+    font-size: 1.5rem;
+    color: white;
+    font-weight: 300;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px white;
+}
+
+.close-btn-overlay {
+    margin-top: 30px;
+    background: transparent;
+    border: 1px solid var(--highlight);
+    color: var(--highlight);
+    padding: 8px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn-overlay:hover {
+    background: var(--highlight);
+    color: #000;
+    box-shadow: 0 0 20px var(--highlight);
+}
+
+.breathing-active {
+    animation: breatheAnim 8s infinite ease-in-out;
+}
+
+@keyframes breatheAnim {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    40% {
+        transform: scale(2.5);
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: scale(2.5);
+        opacity: 0.9;
+    }
+
+    90% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+}
