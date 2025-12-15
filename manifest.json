@@ -11,14 +11,10 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "icon_192.png",
-      "sizes": "192x192",
-      "type": "image/jpeg"
-    },
-    {
+      // 192px 코드를 제거했습니다.
       "src": "icon_512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpeg" // 이전 단계에서 JPEG으로 맞춘 코드를 유지합니다.
     }
   ]
 }
